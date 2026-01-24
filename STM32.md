@@ -1,4 +1,68 @@
-# 串口
+# ADC（模拟-数字转换器）
+## 1. 介绍
+ADC（Analog-to-Digital Converter，模拟-数字转换器）是一种电子设备，它可以将模拟信号转换为数字信号。
+
+## 2. 工作原理
+ADC的工作原理是通过采集模拟信号，然后将其转换为数字信号。ADC的采集方式有两种：
+
+1. 单次采样：ADC一次性采集全部模拟信号，然后转换为数字信号。
+2. 连续采样：ADC以固定时间间隔采集模拟信号，然后转换为数字信号。
+
+## 3. 应用场景
+ADC的应用场景有：
+
+1. 电压测量：ADC可以测量电压，如测量电池电压、测量电源电压。
+2. 环境光测量：ADC可以测量环境光，如测量太阳光照度。
+3. 声音测量：ADC可以测量声音，如测量声音强度。
+
+## 4. 注意事项
+1. ADC只能在系统运行时使用，不能在系统停止时使用。
+2. ADC的采样率一般为 12.5MHz、25MHz、50MHz、100MHz。
+3. ADC的精度一般为 12位、13位、14位、15位。
+
+## 代码示例
+1. 标准库函数：
+```c
+#include "stm32f10x.h"
+
+int main(void)
+{
+    // 使能ADC时钟
+    RCC->APB2ENR |= RCC_APB2ENR_ADC1EN;
+    // 设置ADC工作参数
+    ADC1->CR2 |= ADC_CR2_ADON;
+    // 启动ADC
+    ADC1->CR2 |= ADC_CR2_SWSTART;
+    while (1)
+    {
+        // 正常运行代码
+        // 若ADC采样完成，则读取ADC数据
+        if (ADC1->SR & ADC_SR_EOC)
+        {
+            uint16_t adc_value = ADC1->DR;
+        }
+    }
+}
+```
+2. HAL库函数：
+```c
+int main(void)
+{
+
+    HAL_Init();
+  SystemClock_Config();
+  MX_GPIO_Init();
+  MX_ADC1_Init();
+  while (1)
+  {
+    adc_value1 = HAL_ADC_GetValue(hadc);
+    adc_value2 = HAL_ADC_GetValue(hadc2);
+
+  }
+}
+```
+
+# 串口(USART)
 ## 1. 介绍
 串口（Serial Peripheral Interface，SPI）是一种串行通信接口，它可以实现数据收发。
 
